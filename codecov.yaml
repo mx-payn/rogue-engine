@@ -1,5 +1,7 @@
 ignore:
   - "test"
+  - "source"
+  - "include/rogue/EntryPoint.cpp"
 
 comment:
   require_changes: true
