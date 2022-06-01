@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.14...3.22)
 
 project(RogueTests LANGUAGES CXX)
 
+# ---- IDE support ----
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # ---- Options ----
 
 option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
@@ -26,9 +29,8 @@ endif()
 
 # ---- Create binary ----
 
-file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
-add_executable(${PROJECT_NAME} ${sources})
-target_link_libraries(${PROJECT_NAME} doctest::doctest rogue::rogue)
+add_executable(${PROJECT_NAME} source/main.cpp source/Game.cpp)
+target_link_libraries(${PROJECT_NAME} rogue::rogue doctest::doctest)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
 # enable compiler warnings
