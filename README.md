@@ -12,10 +12,10 @@ to provide functionalities for educational games on programming languages.
 
 ## Roadmap
 
-- [] -- v0.1 -- simple 'snake' clone
-- [] -- v0.2 -- original 'rogue' clone
-- [] -- v0.3 -- 'rogue' with 'code combat system'
-- [] -- v1.0 -- 'rogue-haskell'
+- [ ] -- v0.1 -- simple 'snake' clone
+- [ ] -- v0.2 -- original 'rogue' clone
+- [ ] -- v0.3 -- 'rogue' with 'code combat system'
+- [ ] -- v1.0 -- 'rogue-haskell'
 
 ## Usage
 
