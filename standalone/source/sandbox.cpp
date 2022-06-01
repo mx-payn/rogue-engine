@@ -1,4 +1,4 @@
-#include "rogue/EntryPoint.hpp"
+#include "rogue/EntryPoint.cpp"
 
 class Sandbox : public Rogue::Game {
 public:
