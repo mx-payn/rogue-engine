@@ -7,7 +7,7 @@ namespace Rogue {
     (void)argv;
   }
   bool Game::EngineSetup() { return true; }
-  void Game::Run() {}
+  void Game::Run() { m_Running = true; }
   void Game::OnEvent() {}
 
 }  // namespace Rogue
