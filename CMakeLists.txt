@@ -44,7 +44,6 @@ include(cmake/SourcesAndHeaders.cmake)
 # Note: for header-only libraries change all PUBLIC flags to INTERFACE and create an interface
 # target: add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME} ${rogue-headers} ${rogue-sources})
-target_sources(${PROJECT_NAME} PUBLIC include/greeter/greeter.h source/greeter.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
