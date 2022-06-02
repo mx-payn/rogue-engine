@@ -2,6 +2,7 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/stdout_sinks.h>
 
 #include <memory>
 #include <unordered_map>
@@ -16,21 +17,26 @@ namespace Rogue {
          {LogLevel::Info, spdlog::level::info},  {LogLevel::Debug, spdlog::level::debug},
          {LogLevel::Trace, spdlog::level::trace}};
 
-  bool Logger::Init(LogLevel logLevel) {
-    std::vector<spdlog::sink_ptr> logSinks;
+  bool Logger::Init(LogLevel logLevel, int logSinks) {
+    std::vector<spdlog::sink_ptr> logSinksVec;
 
     // stdout color sink
-    logSinks.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
-    if (!logSinks[0]) return false;
-    logSinks[0]->set_pattern("[%T] [%^%l%$] %v");
+    if (logSinks & LogSink::ColorStdOut) {
+      logSinksVec.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
+      if (!logSinksVec[0]) return false;
+      logSinksVec[0]->set_pattern("[%T] [%^%l%$] %v");
+    }
 
     // basic file sink
-    logSinks.emplace_back(std::make_shared<spdlog::sinks::basic_file_sink_mt>("rogue.log", true));
-    if (!logSinks[1]) return false;
-    logSinks[1]->set_pattern("[%T] [%l] %v");
+    if (logSinks & LogSink::BasicFile) {
+      logSinksVec.emplace_back(
+          std::make_shared<spdlog::sinks::basic_file_sink_mt>("rogue.log", true));
+      if (!logSinksVec[1]) return false;
+      logSinksVec[1]->set_pattern("[%T] [%l] %v");
+    }
 
     // logger initialization
-    s_Logger = std::make_shared<spdlog::logger>("Rogue", begin(logSinks), end(logSinks));
+    s_Logger = std::make_shared<spdlog::logger>("Rogue", begin(logSinksVec), end(logSinksVec));
     if (!s_Logger) return false;
     spdlog::register_logger(s_Logger);
     s_Logger->set_level(m_LevelMap[logLevel]);
