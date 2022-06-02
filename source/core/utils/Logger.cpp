@@ -16,7 +16,7 @@ namespace Rogue {
          {LogLevel::Info, spdlog::level::info},  {LogLevel::Debug, spdlog::level::debug},
          {LogLevel::Trace, spdlog::level::trace}};
 
-  bool Logger::Init() {
+  bool Logger::Init(LogLevel logLevel) {
     std::vector<spdlog::sink_ptr> logSinks;
 
     // stdout color sink
@@ -33,8 +33,8 @@ namespace Rogue {
     s_Logger = std::make_shared<spdlog::logger>("Rogue", begin(logSinks), end(logSinks));
     if (!s_Logger) return false;
     spdlog::register_logger(s_Logger);
-    s_Logger->set_level(spdlog::level::trace);
-    s_Logger->flush_on(spdlog::level::trace);
+    s_Logger->set_level(m_LevelMap[logLevel]);
+    s_Logger->flush_on(m_LevelMap[logLevel]);
 
     return true;
   }
