@@ -11,7 +11,7 @@ namespace Rogue {
 
   class Logger {
   public:
-    static void Init();
+    static bool Init();
     static std::shared_ptr<spdlog::logger>& GetLogger() { return s_Logger; }
     static void SetLogLevel(LogLevel logLevel);
 
