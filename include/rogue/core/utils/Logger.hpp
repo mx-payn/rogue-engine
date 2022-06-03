@@ -46,7 +46,7 @@ namespace Rogue {
      *  \param[in] logSinks The bitmask for logSinks to be enabled.
      *  \returns True on success, else false.
      */
-    static bool Init(LogLevel logLevel, int logSinks);
+    static bool Init(LogLevel logLevel, int logSinks = 0);
 
     // -- Getter / Setter
     static std::shared_ptr<spdlog::logger>& GetLogger() { return s_Logger; }
