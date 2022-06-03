@@ -26,6 +26,14 @@ include(cmake/CPM.cmake)
 # PackageProject.cmake will be used to make our target installable
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
 
+# spdlog as logging library
+CPMAddPackage(
+  NAME spdlog
+  VERSION 1.9.2
+  GITHUB_REPOSITORY gabime/spdlog
+  OPTIONS "SPDLOG_INSTALL YES"
+)
+
 # ---- Add source files ----
 include(cmake/SourcesAndHeaders.cmake)
 
@@ -38,7 +46,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
 # Link dependencies
-target_link_libraries(${PROJECT_NAME} PRIVATE)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -61,5 +69,5 @@ packageProject(
   INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
   VERSION_HEADER "${VERSION_HEADER_LOCATION}"
   COMPATIBILITY SameMajorVersion
-  # DEPENDENCIES "fmt 8.1.1"
+  DEPENDENCIES "spdlog 1.9.2"
 )
