@@ -18,23 +18,20 @@ include(../cmake/tools.cmake)
 
 include(../cmake/CPM.cmake)
 
-cpmaddpackage("gh:onqtam/doctest@2.4.8")
-cpmaddpackage("gh:TheLartians/Format.cmake@1.7.3")
+CPMAddPackage("gh:onqtam/doctest@2.4.8")
+CPMAddPackage("gh:TheLartians/Format.cmake@1.7.3")
 
 if(TEST_INSTALLED_VERSION)
   find_package(rogue REQUIRED)
 else()
-  cpmaddpackage(NAME rogue SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+  CPMAddPackage(NAME rogue SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 endif()
 
 # ---- Create binary ----
 
 add_executable(
-  ${PROJECT_NAME}
-  source/main.cpp
-  source/Game.cpp
-  source/core/utils/Logger.cpp
-  source/core/utils/Assertion.cpp
+  ${PROJECT_NAME} source/main.cpp source/Game.cpp source/core/utils/Logger.cpp
+                  source/core/utils/Assertion.cpp
 )
 target_link_libraries(${PROJECT_NAME} rogue::rogue doctest::doctest)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
