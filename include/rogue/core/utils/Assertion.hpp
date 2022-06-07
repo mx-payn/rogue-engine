@@ -28,11 +28,12 @@ namespace Rogue {
      *
      */
     template <typename... Args> static bool AssertFn(bool exp, int line, const std::string& file,
-                                                     const std::string& desc = "", Args... args) {
+                                                     const std::string& desc = std::string(),
+                                                     Args... args) {
       if (exp) return true;
 
       // --> assertion failed
-      if (desc == "") {
+      if (!desc.empty()) {
         ROGUE_LOG_FATAL("ASSERTION FAILED -- {}:{}", file.c_str(), line);
         ROGUE_LOG_FATAL(desc, args...);
       }
