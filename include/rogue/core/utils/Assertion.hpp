@@ -32,7 +32,7 @@ namespace Rogue {
       if (exp) return true;
 
       // --> assertion failed
-      if (!desc.empty()) {
+      if (desc == "") {
         ROGUE_LOG_FATAL("ASSERTION FAILED -- {}:{}", file.c_str(), line);
         ROGUE_LOG_FATAL(desc, args...);
       }
@@ -50,24 +50,24 @@ namespace Rogue {
 // ==> MACROS
 //
 ////////
-#define ROGUE_ASSERT(exp, ...)                                                                     \
-  if (!::Rurouni::Assertion::AssertFn(static_cast<int>(exp), __LINE__, __FILE__, ##__VA_ARGS__)) { \
-    ROGUE_DEBUG_BREAK;                                                                             \
+#define ROGUE_ASSERT(exp, ...)                                                                   \
+  if (!::Rogue::Assertion::AssertFn(static_cast<int>(exp), __LINE__, __FILE__, ##__VA_ARGS__)) { \
+    ROGUE_DEBUG_BREAK;                                                                           \
   }
-#define ROGUE_ASSERT_EQ(exp1, exp2, ...)                                                      \
-  if (!::Rurouni::Assertion::AssertFn(static_cast<int>((exp1) == (exp2)), __LINE__, __FILE__, \
-                                      ##__VA_ARGS__)) {                                       \
-    ROGUE_DEBUG_BREAK;                                                                        \
+#define ROGUE_ASSERT_EQ(exp1, exp2, ...)                                                    \
+  if (!::Rogue::Assertion::AssertFn(static_cast<int>((exp1) == (exp2)), __LINE__, __FILE__, \
+                                    ##__VA_ARGS__)) {                                       \
+    ROGUE_DEBUG_BREAK;                                                                      \
   }
-#define ROGUE_ASSERT_NOT_EQ(exp1, exp2, ...)                                                  \
-  if (!::Rurouni::Assertion::AssertFn(static_cast<int>((exp1) != (exp2)), __LINE__, __FILE__, \
-                                      ##__VA_ARGS__)) {                                       \
-    ROGUE_DEBUG_BREAK;                                                                        \
+#define ROGUE_ASSERT_NOT_EQ(exp1, exp2, ...)                                                \
+  if (!::Rogue::Assertion::AssertFn(static_cast<int>((exp1) != (exp2)), __LINE__, __FILE__, \
+                                    ##__VA_ARGS__)) {                                       \
+    ROGUE_DEBUG_BREAK;                                                                      \
   }
-#define ROGUE_ASSERT_NOT_NULL(value, ...)                                                     \
-  if (!::Rurouni::Assertion::AssertFn(static_cast<int>(value != nullptr), __LINE__, __FILE__, \
-                                      ##__VA_ARGS__)) {                                       \
-    ROGUE_DEBUG_BREAK;                                                                        \
+#define ROGUE_ASSERT_NOT_NULL(value, ...)                                                   \
+  if (!::Rogue::Assertion::AssertFn(static_cast<int>(value != nullptr), __LINE__, __FILE__, \
+                                    ##__VA_ARGS__)) {                                       \
+    ROGUE_DEBUG_BREAK;                                                                      \
   }
 
 #endif  // ASSERTION_H_
