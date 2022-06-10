@@ -35,6 +35,7 @@ add_executable(
   source/core/utils/Assertion.cpp
   source/core/memory/SmartPointer.cpp
   source/core/memory/PoolAllocator.cpp
+  source/core/types/Stack.cpp
 )
 target_link_libraries(${PROJECT_NAME} rogue::rogue doctest::doctest)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
