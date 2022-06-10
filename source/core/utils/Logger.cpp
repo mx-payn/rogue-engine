@@ -10,6 +10,7 @@
 namespace Rogue {
 
   std::shared_ptr<spdlog::logger> Logger::s_Logger = nullptr;
+  static bool s_Initialized = false;
 
   std::unordered_map<LogLevel, spdlog::level::level_enum> m_LevelMap
       = {{LogLevel::None, spdlog::level::off},   {LogLevel::Fatal, spdlog::level::critical},
@@ -18,6 +19,10 @@ namespace Rogue {
          {LogLevel::Trace, spdlog::level::trace}};
 
   bool Logger::Init(LogLevel logLevel, int logSinks) {
+    if (s_Initialized) {
+      return true;
+    }
+
     std::vector<spdlog::sink_ptr> logSinksVec;
 
     // stdout color sink
@@ -41,6 +46,8 @@ namespace Rogue {
     spdlog::register_logger(s_Logger);
     s_Logger->set_level(m_LevelMap[logLevel]);
     s_Logger->flush_on(m_LevelMap[logLevel]);
+
+    s_Initialized = true;
 
     return true;
   }
