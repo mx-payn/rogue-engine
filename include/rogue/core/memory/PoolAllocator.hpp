@@ -3,30 +3,26 @@
 
 #include <cstddef>
 #include <memory>
+#include <stack>
 #include <utility>
+
+#include "rogue/core/utils/Assertion.hpp"
 
 #define ROGUE_POOL_ALLOCATOR_DEFAULT_SIZE 1024
 
-namespace rogue {
-
-  template <typename T> union PoolChunk {
-    T Value;
-    PoolChunk<T>* NextPoolChunk;
-
-    PoolChunk() = default;
-    ~PoolChunk() = default;
-  };
+namespace Rogue {
 
   template <typename T> class PoolAllocator {
   public:
     explicit PoolAllocator(size_t size = ROGUE_POOL_ALLOCATOR_DEFAULT_SIZE) : m_Size(size) {
-      m_Data = new PoolChunk<T>[size];
-      m_Head = m_Data;
+      // allocate amount of objects / chunks
+      // m_First = new T[size];
+      m_First = (T*)malloc(sizeof(T) * size);
+      m_Last = m_First + (size - 1);
 
-      for (size_t i = 0; i < m_Size - 1; i++)
-        m_Data[i].NextPoolChunk = std::addressof(m_Data[i + 1]);
-
-      m_Data[m_Size - 1].NextPoolChunk = nullptr;
+      for (int i = m_Size - 1; i >= 0; i--) {
+        m_FreeChunks.push(m_First + i);
+      }
     }
 
     PoolAllocator(const PoolAllocator& other) = delete;              // Copy Constructor
@@ -35,37 +31,47 @@ namespace rogue {
     PoolAllocator& operator=(const PoolAllocator&& other) = delete;  // Move Assignment
 
     ~PoolAllocator() {
-      delete[] m_Data;
-      m_Data = nullptr;
-      m_Head = nullptr;
+      delete m_First;
+      m_First = nullptr;
+      m_Last = nullptr;
     }
 
     template <typename... Args> T* allocate(Args&&... args) {
-      if (m_Head == nullptr) return nullptr;  // no more space to allocate
+      if (m_FreeChunks.empty()) return nullptr;  // no more space to allocate
 
-      PoolChunk<T>* poolChunk = m_Head;
-      m_Head = m_Head->NextPoolChunk;
-      T* returnValue = new (std::addressof(poolChunk->Value)) T(std::forward<Args>(args)...);
+      T* poolChunk = m_FreeChunks.top();
+
+      // placment new of object
+      T* returnValue = new (poolChunk) T(std::forward<Args>(args)...);
+
+      m_FreeChunks.pop();
 
       return returnValue;
     }
 
     void deallocate(T* data) {
-      // check data actually was allocated here
-      ROGUE_ASSERT(data >= m_Data && data <= std::addressof(m_Data[m_Size - 1]));
+      // check if pointer was allocated here
+      bool lower = data >= m_First;
+      bool upper = data <= m_Last;
+      ROGUE_ASSERT(lower && upper, "Pointer was not allocated here!");
 
+      // object dextructor call and resetting head
       data->~T();
-      PoolChunk<T>* poolChunk = reinterpret_cast<PoolChunk<T>*>(data);
-      poolChunk->NextPoolChunk = m_Head;
-      m_Head = poolChunk;
+      m_FreeChunks.push(data);
     }
+
+    uint32_t GetObjectCount() const { return m_Size - m_FreeChunks.size(); }
+    size_t GetFreeChunkCount() const { return m_FreeChunks.size(); }
+    size_t GetSize() const { return m_Size; }
 
   private:
     size_t m_Size = 0;
-    PoolChunk<T>* m_Data = nullptr;
-    PoolChunk<T>* m_Head = nullptr;
+    T* m_First = nullptr;
+    T* m_Last = nullptr;
+
+    std::stack<T*> m_FreeChunks;
   };
 
-}  // namespace rogue
+}  // namespace Rogue
 
 #endif  // POOLALLOCATOR_H_
