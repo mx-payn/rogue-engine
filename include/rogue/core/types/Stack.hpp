@@ -41,6 +41,8 @@ namespace Rogue {
       return m_Elements[m_HeadIndex - 1];
     }
 
+    void Clear() { m_HeadIndex = 0; }
+
   private:
     uint32_t m_Size;
     uint32_t m_HeadIndex;
