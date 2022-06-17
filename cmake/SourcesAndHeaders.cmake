@@ -1,6 +1,9 @@
 set(
-  rogue-headers include/rogue/core/Game.hpp include/rogue/core/utils/Logger.hpp
-  include/rogue/core/utils/Assertion.hpp include/rogue/core/utils/DebugBreak.hpp
+  rogue-headers
+  include/rogue/core/Game.hpp
+  include/rogue/core/utils/Logger.hpp
+  include/rogue/core/utils/Assertion.hpp
+  include/rogue/core/utils/DebugBreak.hpp
   include/rogue/core/memory/SmartPointer.hpp
   include/rogue/core/memory/PoolAllocator.hpp
   include/rogue/core/memory/StackAllocator.hpp
