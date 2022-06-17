@@ -21,7 +21,7 @@ TEST_CASE("StackAllocator - simple allocation/deallocation") {
   CHECK(t3->test == 42);
   CHECK(allocator.GetObjectCount() == 3);
 
-  allocator.DeallocateAll();
+  allocator.PopAll();
   CHECK(allocator.GetObjectCount() == 0);
 }
 
@@ -39,5 +39,5 @@ TEST_CASE("StackAllocator - Marker") {
   CHECK(allocator.GetObjectCount() == 3);
   allocator.PopMarker();
   CHECK(allocator.GetObjectCount() == 2);
-  allocator.DeallocateAll();
+  allocator.PopAll();
 }
