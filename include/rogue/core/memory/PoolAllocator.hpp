@@ -26,7 +26,7 @@ namespace Rogue {
      *
      *  \param[in] amount Maximum amount of objects to be allocated.
      */
-    explicit PoolAllocator(size_t amount = ROGUE_POOL_ALLOCATOR_DEFAULT_AMOUNT)
+    explicit PoolAllocator(uint32_t amount = ROGUE_POOL_ALLOCATOR_DEFAULT_AMOUNT)
         : m_Size(amount), m_FreeChunks(amount) {
       // allocate amount of objects / chunks
       m_First = (T*)malloc(sizeof(T) * amount);
@@ -90,7 +90,7 @@ namespace Rogue {
     size_t GetSize() const { return m_Size; }
 
   private:
-    size_t m_Size = 0;     //!< Amount of objects that can be allocated.
+    uint32_t m_Size = 0;   //!< Amount of objects that can be allocated.
     T* m_First = nullptr;  //!< Beginning of address space.
     T* m_Last = nullptr;   //!< End of address space.
 
