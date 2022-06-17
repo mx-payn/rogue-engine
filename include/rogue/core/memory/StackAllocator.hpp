@@ -1,6 +1,12 @@
 #ifndef STACKALLOCATOR_H_
 #define STACKALLOCATOR_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include <new>
+#include <utility>
+
 #include "rogue/core/math/Util.hpp"
 #include "rogue/core/types/Stack.hpp"
 #include "rogue/core/utils/Assertion.hpp"
@@ -18,7 +24,7 @@ namespace Rogue {
    */
   class StackAllocator {
   public:
-    explicit StackAllocator(size_t size = 1024)
+    explicit StackAllocator(uint32_t size = 1024)
         : m_Size(size),
           m_ObjectContexts(size / sizeof(ObjectContext)),
           m_Markers(size / sizeof(byte*)) {
@@ -33,7 +39,7 @@ namespace Rogue {
     StackAllocator& operator=(StackAllocator&& other) = delete;       // Move Assignment
     ~StackAllocator() {
       ROGUE_ASSERT(m_Data == m_Head, "Destructor called with [{}] objects still on stack!",
-                   m_ObjectContexts.GetCount());
+                   m_ObjectContexts.GetCount())
 
       delete m_Data;
       m_Data = nullptr;
@@ -105,7 +111,7 @@ namespace Rogue {
      *  on top of the marker-stack. Head is set to markers address.
      */
     void PopMarker() {
-      ROGUE_ASSERT(!m_Markers.IsEmpty(), "No markers to pop!");
+      ROGUE_ASSERT(!m_Markers.IsEmpty(), "No markers to pop!")
 
       byte* marker = m_Markers.Pop();
       ObjectContext current;
@@ -162,7 +168,7 @@ namespace Rogue {
   private:                   // -- variables
     byte* m_Data = nullptr;  //!< The available space on the stack.
     byte* m_Head = nullptr;  //!< The address on the very top of the stack.
-    size_t m_Size = 0;       //!< The size of the stack in bytes.
+    uint32_t m_Size = 0;     //!< The size of the stack in bytes.
 
     Stack<ObjectContext> m_ObjectContexts;  //!< Container holding allocated object information
                                             //!< in the allocated order (last allocated on top).

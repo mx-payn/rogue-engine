@@ -1,7 +1,11 @@
 #ifndef POOLALLOCATOR_H_
 #define POOLALLOCATOR_H_
 
-#include <cstddef>
+#include <stdint.h>
+#include <stdlib.h>
+
+#include <new>
+#include <utility>
 
 #include "rogue/core/types/Stack.hpp"
 #include "rogue/core/utils/Assertion.hpp"
@@ -44,7 +48,7 @@ namespace Rogue {
     PoolAllocator& operator=(const PoolAllocator& other) = delete;  // Copy Assignment
     PoolAllocator& operator=(PoolAllocator&& other) = delete;       // Move Assignment
     ~PoolAllocator() {
-      delete m_First;
+      free(m_First);
       m_First = nullptr;
       m_Last = nullptr;
     }
@@ -77,7 +81,7 @@ namespace Rogue {
       // check if pointer was allocated here
       bool lower = data >= m_First;
       bool upper = data <= m_Last;
-      ROGUE_ASSERT(lower && upper, "Pointer was not allocated here!");
+      ROGUE_ASSERT(lower && upper, "Pointer was not allocated here!")
 
       // object dextructor call and resetting head
       data->~T();

@@ -2,10 +2,7 @@
 
 #include <doctest/doctest.h>
 
-#include <cstdint>
 #include <string>
-
-#include "rogue/core/utils/Logger.hpp"
 
 struct TestStruct {
   int Num = 0;
