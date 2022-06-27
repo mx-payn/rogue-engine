@@ -9,9 +9,9 @@
 #else
 #  include <signal.h>
 #  if (defined(SIGTRAP))
-#    define ROGUE_DEBUG_BREAK raise(SIGTRAP);
+#    define ROGUE_DEBUG_BREAK raise(SIGTRAP)
 #  else
-#    define ROGUE_DEBUG_BREAK raise(SIGABRT);
+#    define ROGUE_DEBUG_BREAK raise(SIGABRT)
 #  endif
 #endif
 

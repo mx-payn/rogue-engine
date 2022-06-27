@@ -3,7 +3,11 @@
 #include <doctest/doctest.h>
 
 TEST_CASE("Assertion") {
-  CHECK(Rogue::Assertion::AssertFn(true, 0, ""));
-  CHECK(Rogue::Assertion::AssertFn(true, 0, "Test assertion with {} Text.", "format"));
-  CHECK(!Rogue::Assertion::AssertFn(false, 0, ""));
+  Rogue::Logger::Init(Rogue::LogLevel::Trace);
+  CHECK(Rogue::Assertion::AssertFn(true, 0, "Assertion.cpp"));
+  CHECK(Rogue::Assertion::AssertFn(true, 0, "Assertion.cpp", "Test assertion with {} Text.",
+                                   "format"));
+  CHECK(!Rogue::Assertion::AssertFn(false, 0, "Assertion.cpp"));
+  CHECK(!Rogue::Assertion::AssertFn(false, 0, "Assertion.cpp", "Test assertion with {} Text.",
+                                    "format"));
 }

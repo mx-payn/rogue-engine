@@ -30,8 +30,15 @@ endif()
 # ---- Create binary ----
 
 add_executable(
-  ${PROJECT_NAME} source/main.cpp source/Game.cpp source/core/utils/Logger.cpp
-                  source/core/utils/Assertion.cpp
+  ${PROJECT_NAME}
+  source/main.cpp
+  source/Game.cpp
+  source/core/utils/Logger.cpp
+  source/core/utils/Assertion.cpp
+  source/core/memory/SmartPointer.cpp
+  source/core/memory/PoolAllocator.cpp
+  source/core/memory/StackAllocator.cpp
+  source/core/types/Stack.cpp
 )
 target_link_libraries(${PROJECT_NAME} rogue::rogue doctest::doctest)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
